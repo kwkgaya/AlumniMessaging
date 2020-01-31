@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -10,7 +6,7 @@ using Xamarin.Forms;
 
 namespace AlumniSms.ViewModels
 {
-    public class AboutViewModel : BaseViewModel
+    public class SendSmsViewModel : BaseViewModel
     {
         private readonly IEnumerable<Contact> _contacts;
         private string _text;
@@ -23,11 +19,11 @@ namespace AlumniSms.ViewModels
             set => SetProperty(ref _text, value);
         }
 
-        public AboutViewModel()
+        public SendSmsViewModel()
         {
         }
 
-        public AboutViewModel(IEnumerable<Contact> contacts)
+        public SendSmsViewModel(IEnumerable<Contact> contacts)
         {
             _contacts = contacts;
             Title = "Send Sms";
@@ -42,12 +38,5 @@ namespace AlumniSms.ViewModels
                 var message = new SmsMessage(SmsText, contact.Mobile);
             }
         }
-    }
-
-    public class Contact
-    {
-        public string Name { get; set; }
-        public int Batch { get; set; }
-        public string Mobile { get; set; }
     }
 }

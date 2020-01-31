@@ -8,26 +8,7 @@
             x:Class="AlumniSms.Views.MainPage">
 
     <TabbedPage.Children>
-        <NavigationPage Title="Send Sms">
-            <NavigationPage.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS" Value="tab_about.png"/>
-                </OnPlatform>
-            </NavigationPage.Icon>
-            <x:Arguments>
-                <views:AboutPage />
-            </x:Arguments>
-        </NavigationPage>
-        <NavigationPage Title="Read">
-            <NavigationPage.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS" Value="tab_feed.png"/>
-                </OnPlatform>
-            </NavigationPage.Icon>
-            <x:Arguments>
-                <views:ItemsPage />
-            </x:Arguments>
-        </NavigationPage>
+        <views:SendSmsPage />
+        <views:ItemsPage />
     </TabbedPage.Children>
-    
 </TabbedPage>

@@ -27,15 +27,16 @@ namespace AlumniSms.ViewModels
         {
             _contacts = contacts;
             Title = "Send Sms";
-            SendToAllCommand = new Command(async () => await SendSms());
+            SendToAllCommand = new Command(async () => await SendSmsToAll());
         }
 
-        private async Task SendSms()
+        private async Task SendSmsToAll()
         {
             foreach (var contact in _contacts)
             {
                 var text = SmsText.Replace("@Name", contact.Name);
-                var message = new SmsMessage(SmsText, contact.Mobile);
+                var message = new SmsMessage(text, contact.Mobile);
+                await Sms.ComposeAsync(message);
             }
         }
     }

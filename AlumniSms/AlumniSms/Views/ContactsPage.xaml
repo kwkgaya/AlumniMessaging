@@ -12,7 +12,9 @@
              x:DataType="vm:ContactsViewModel">
     <StackLayout>
         <Button Text="Read Contacts"
-                Command="{Binding LoadContactsCommand}"/>
+                Command="{Binding LoadContactsCommand}"
+                BackgroundColor="{StaticResource Accent}" 
+                Margin="0,10,0,0" />
         <ListView x:Name="ItemsListView"
                 ItemsSource="{Binding Contacts}"
                 VerticalOptions="FillAndExpand"

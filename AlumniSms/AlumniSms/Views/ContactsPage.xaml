@@ -3,25 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AlumniSms.ViewModels;assembly=AlumniSms"
+             xmlns:m="clr-namespace:AlumniSms.Models;assembly=AlumniSms"
              mc:Ignorable="d"
-             x:Class="AlumniSms.Views.ItemsPage"
+             x:Class="AlumniSms.Views.ContactsPage"
              Title="{Binding Title}"
-             x:Name="BrowseItemsPage">
-
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Clicked="AddItem_Clicked" />
-    </ContentPage.ToolbarItems>
-
+             x:Name="BrowseItemsPage"
+             x:DataType="vm:ContactsViewModel">
     <StackLayout>
+        <Button Text="Read Contacts"
+                Command="{Binding LoadContactsCommand}"/>
         <ListView x:Name="ItemsListView"
-                ItemsSource="{Binding Items}"
+                ItemsSource="{Binding Contacts}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
-                RefreshCommand="{Binding LoadItemsCommand}"
+                RefreshCommand="{Binding LoadContactsCommand}"
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                CachingStrategy="RecycleElement"
-                ItemSelected="OnItemSelected">
+                CachingStrategy="RecycleElement">
             <d:ListView.ItemsSource>
                 <x:Array Type="{x:Type x:String}">
                     <x:String>First Item</x:String>
@@ -33,15 +32,21 @@
                 </x:Array>
             </d:ListView.ItemsSource>
             <ListView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="m:Contact">
                     <ViewCell>
-                        <StackLayout Padding="10">
-                            <Label Text="{Binding Text}" 
+                        <StackLayout Padding="10"
+                                     Orientation="Horizontal">
+                            <Label Text="{Binding Name}" 
                                 d:Text="{Binding .}"
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemTextStyle}" 
                                 FontSize="16" />
-                            <Label Text="{Binding Description}" 
+                            <Label Text="{Binding Mobile}" 
+                                   d:Text="{Binding .}"
+                                   LineBreakMode="NoWrap" 
+                                   Style="{DynamicResource ListItemTextStyle}" 
+                                   FontSize="16" />
+                            <Label Text="{Binding Batch}" 
                                 d:Text="Item description"
                                 LineBreakMode="NoWrap"
                                 Style="{DynamicResource ListItemDetailTextStyle}"

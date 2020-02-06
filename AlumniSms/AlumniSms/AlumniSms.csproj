@@ -16,6 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\ContactsPage.xaml.cs">
+      <DependentUpon>ContactsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\SendSmsPage.xaml.cs">
       <DependentUpon>SendSmsPage.xaml</DependentUpon>
     </Compile>

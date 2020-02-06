@@ -9,6 +9,6 @@
 
     <TabbedPage.Children>
         <views:SendSmsPage />
-        <views:ItemsPage />
+        <views:ContactsPage />
     </TabbedPage.Children>
 </TabbedPage>

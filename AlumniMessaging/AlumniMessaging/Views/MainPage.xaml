@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:vm="clr-namespace:AlumniMessaging.ViewModels;assembly=AlumniMessaging"
+            xmlns:m="clr-namespace:AlumniMessaging.Models;assembly=AlumniMessaging"
+            mc:Ignorable="d"
+            xmlns:views="clr-namespace:AlumniMessaging.Views"
+            x:Class="AlumniMessaging.Views.MainPage"
+            x:DataType="vm:MainPageViewModel">
+
+    <TabbedPage.Children>
+        <views:ContactsPage BindingContext="{Binding ContactsViewModel}"/>
+        <views:SendMessagePage BindingContext="{Binding SendMessageViewModel}"/>
+    </TabbedPage.Children>
+</TabbedPage>

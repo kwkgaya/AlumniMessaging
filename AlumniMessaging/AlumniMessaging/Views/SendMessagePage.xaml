@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="AlumniMessaging.Views.SendMessagePage"
+             xmlns:vm="clr-namespace:AlumniMessaging.ViewModels"
+             Title="Send messages"
+             x:DataType="vm:SendMessageViewModel">
+    <Grid Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button BackgroundColor="{StaticResource Accent}"
+                Text="Send to All"
+                Command="{Binding SendToAllCommand}"
+                HorizontalOptions="Fill"
+                Grid.Row="0"
+                Margin="0,10,0,0"/>
+        <Frame Grid.Row="1"
+               BorderColor="{x:StaticResource Key=Primary}">
+            <Entry Text="{Binding MessageText}"
+                   FontSize="Body"
+                   MaxLength="140"
+                   Placeholder="Message Text. Type @Name to insert contact name"/>
+        </Frame>
+    </Grid>
+</ContentPage>

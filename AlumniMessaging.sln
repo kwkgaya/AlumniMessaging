@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlumniMessaging.iOS", "Alum
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlumniMessaging", "AlumniMessaging\AlumniMessaging\AlumniMessaging.csproj", "{9BCF3731-87A5-42D5-9DBB-BB497097B942}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlumniMessaging.Tests", "AlumniMessaging.Tests\AlumniMessaging.Tests.csproj", "{41F3A6AA-0DA5-4117-8828-8B4DE09B633F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,18 @@ Global
 		{9BCF3731-87A5-42D5-9DBB-BB497097B942}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{9BCF3731-87A5-42D5-9DBB-BB497097B942}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{9BCF3731-87A5-42D5-9DBB-BB497097B942}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
+		{41F3A6AA-0DA5-4117-8828-8B4DE09B633F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41F3A6AA-0DA5-4117-8828-8B4DE09B633F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41F3A6AA-0DA5-4117-8828-8B4DE09B633F}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{41F3A6AA-0DA5-4117-8828-8B4DE09B633F}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{41F3A6AA-0DA5-4117-8828-8B4DE09B633F}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{41F3A6AA-0DA5-4117-8828-8B4DE09B633F}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{41F3A6AA-0DA5-4117-8828-8B4DE09B633F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41F3A6AA-0DA5-4117-8828-8B4DE09B633F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41F3A6AA-0DA5-4117-8828-8B4DE09B633F}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{41F3A6AA-0DA5-4117-8828-8B4DE09B633F}.Release|iPhone.Build.0 = Release|Any CPU
+		{41F3A6AA-0DA5-4117-8828-8B4DE09B633F}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{41F3A6AA-0DA5-4117-8828-8B4DE09B633F}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

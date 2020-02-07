@@ -5,8 +5,7 @@ namespace AlumniMessaging.Models
     public class Contact
     {
         private string _mobile;
-        public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public int Batch { get; set; }
 
         public string Mobile

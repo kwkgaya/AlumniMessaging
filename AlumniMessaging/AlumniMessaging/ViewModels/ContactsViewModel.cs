@@ -14,6 +14,7 @@ namespace AlumniMessaging.ViewModels
 {
     public class ContactsViewModel : BaseViewModel
     {
+        private readonly char[] _digits = new[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
         private readonly IMessageReader _messageReaderService;
         public ObservableCollection<Contact> Contacts { get; set; }
         public Command LoadContactsCommand { get; }
@@ -68,7 +69,7 @@ namespace AlumniMessaging.ViewModels
                 var messages = await _messageReaderService.ReadMessage("AGM", new DateTime(2020, 2, 7));
                 var newContacts = ParseContactsFromMessage(messages);
                 var oldContacts = await ContactsStore.GetContacts();
-                var mergedContacts = newContacts.Union(oldContacts);
+                var mergedContacts = MergeContacts(newContacts, oldContacts);
                 await ContactsStore.OverwriteContacts(mergedContacts);
             }
             catch (Exception ex)
@@ -96,20 +97,43 @@ namespace AlumniMessaging.ViewModels
 
         public Contact ParseContact(ReceivedTextMessage message)
         {
-            var text = message.Text.Remove(0, 3);
+            var text = message.Text.Trim();
+            if (string.IsNullOrEmpty(text))
+                return new Contact {Mobile = message.Sender};
+
             var name = string.Empty;
-            if (int.TryParse(text, out int batch))
+            int batch = 0;
+            try
             {
-                name = text.Substring(0, text.IndexOf(batch.ToString(), StringComparison.OrdinalIgnoreCase));
+                text = text.Remove(0, 3).Trim();
+                var indexOfBatch = text.IndexOfAny(_digits);
+                if (indexOfBatch > 0)
+                {
+                    name = text.Substring(0, indexOfBatch).Trim();
+                    int.TryParse(text.Substring(indexOfBatch), out batch);
+                }
+                else
+                {
+                    name = text;
+                }
             }
+            catch
+            {
+                // ignore Parse errors. Just use the sender
+            }
+
             var contact = new Contact
             {
-                Id = Guid.NewGuid(),
                 Batch = batch,
                 Mobile = message.Sender,
                 Name = name
             };
             return contact;
+        }
+
+        public IEnumerable<Contact> MergeContacts(IEnumerable<Contact> first, IEnumerable<Contact> second)
+        {
+            return first.Union(second);
         }
     }
 }

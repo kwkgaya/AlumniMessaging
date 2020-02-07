@@ -63,7 +63,7 @@ namespace AlumniSms.ViewModels
 
             try
             {
-                var sms = await _readSmsService.ReadSms("", DateTime.Today);
+                var sms = await _readSmsService.ReadSms("AGM", new DateTime(2020, 2, 7));
             }
             catch (Exception ex)
             {

@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using AlumniSms.Models;
+using AlumniSms.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -9,7 +8,6 @@ namespace AlumniSms.ViewModels
 {
     public class SendSmsViewModel : BaseViewModel
     {
-        private readonly IEnumerable<Contact> _contacts;
         private string _text;
 
         public ICommand SendToAllCommand { get; }
@@ -20,20 +18,15 @@ namespace AlumniSms.ViewModels
             set => SetProperty(ref _text, value);
         }
 
-        public SendSmsViewModel()
+        public SendSmsViewModel(IContactsStore contactsStore) : base(contactsStore)
         {
-        }
-
-        public SendSmsViewModel(IEnumerable<Contact> contacts)
-        {
-            _contacts = contacts;
             Title = "Send Sms";
             SendToAllCommand = new Command(async () => await SendSmsToAll());
         }
 
         private async Task SendSmsToAll()
         {
-            foreach (var contact in _contacts)
+            foreach (var contact in await ContactsStore.GetContactsAsync())
             {
                 var text = SmsText.Replace("@Name", contact.Name);
                 var message = new SmsMessage(text, contact.Mobile);

@@ -6,11 +6,11 @@ using AlumniSms.Models;
 
 namespace AlumniSms.Services
 {
-    public class MockDataStore : IDataStore<Contact>
+    public class MockContactsStore : IContactsStore
     {
         private readonly List<Contact> _contacts;
 
-        public MockDataStore()
+        public MockContactsStore()
         {
             _contacts = new List<Contact>()
             {
@@ -23,18 +23,18 @@ namespace AlumniSms.Services
             };
         }
 
-        public async Task<bool> AddContactAsync(Contact Contact)
+        public async Task<bool> AddContactAsync(Contact contact)
         {
-            _contacts.Add(Contact);
+            _contacts.Add(contact);
 
             return await Task.FromResult(true);
         }
 
-        public async Task<bool> UpdateContactAsync(Contact Contact)
+        public async Task<bool> UpdateContactAsync(Contact contact)
         {
-            var oldContact = _contacts.Where((Contact arg) => arg.Id == Contact.Id).FirstOrDefault();
+            var oldContact = _contacts.FirstOrDefault((Contact arg) => arg.Id == contact.Id);
             _contacts.Remove(oldContact);
-            _contacts.Add(Contact);
+            _contacts.Add(contact);
 
             return await Task.FromResult(true);
         }
@@ -52,7 +52,7 @@ namespace AlumniSms.Services
             return await Task.FromResult(_contacts.FirstOrDefault(s => s.Id == id));
         }
 
-        public async Task<IEnumerable<Contact>> GetContactsAsync(bool forceRefresh = false)
+        public async Task<IEnumerable<Contact>> GetContactsAsync()
         {
             return await Task.FromResult(_contacts);
         }

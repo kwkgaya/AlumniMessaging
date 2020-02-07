@@ -8,10 +8,6 @@
              xmlns:vm="clr-namespace:AlumniSms.ViewModels"
              Title="Send sms"
              x:DataType="vm:SendSmsViewModel">
-    
-    <ContentPage.BindingContext>
-        <vm:SendSmsViewModel />
-    </ContentPage.BindingContext>
     <Grid Padding="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

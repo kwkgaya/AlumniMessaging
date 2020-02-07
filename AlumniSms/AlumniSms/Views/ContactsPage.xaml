@@ -10,19 +10,38 @@
              Title="{Binding Title}"
              x:Name="BrowseItemsPage"
              x:DataType="vm:ContactsViewModel">
-    <StackLayout>
-        <Button Text="Read Contacts"
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0"
+                Grid.Column="0"
+                Text="Read from sms"
+                Command="{Binding ReadSmsCommand}"
+                BackgroundColor="{StaticResource Accent}" 
+                Margin="0,10,5,0" />
+        <Button Grid.Row="0"
+                Grid.Column="1"
+                Text="Load Contacts"
                 Command="{Binding LoadContactsCommand}"
                 BackgroundColor="{StaticResource Accent}" 
-                Margin="0,10,0,0" />
-        <ListView x:Name="ItemsListView"
-                ItemsSource="{Binding Contacts}"
-                VerticalOptions="FillAndExpand"
-                HasUnevenRows="true"
-                RefreshCommand="{Binding LoadContactsCommand}"
-                IsPullToRefreshEnabled="true"
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                CachingStrategy="RecycleElement">
+                Margin="5,10,0,0" />
+        <ListView Grid.Row="1"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  x:Name="ItemsListView"
+                  ItemsSource="{Binding Contacts}"
+                  VerticalOptions="FillAndExpand"
+                  HasUnevenRows="true"
+                  RefreshCommand="{Binding LoadContactsCommand}"
+                  IsPullToRefreshEnabled="true"
+                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                  CachingStrategy="RecycleElement">
             <d:ListView.ItemsSource>
                 <x:Array Type="{x:Type x:String}">
                     <x:String>First Item</x:String>
@@ -58,6 +77,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </StackLayout>
+    </Grid>
 
 </ContentPage>

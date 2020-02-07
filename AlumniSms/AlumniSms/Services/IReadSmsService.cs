@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AlumniSms.Services
 {
     public interface IReadSmsService
     {
-        Task<IEnumerable<ReceivedSms>> ReadSms(string startTag);
+        Task<IEnumerable<ReceivedSms>> ReadSms(string startTag, DateTime fromDate);
     }
 
     public class ReceivedSms

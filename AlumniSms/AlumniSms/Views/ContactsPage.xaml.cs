@@ -18,18 +18,16 @@ namespace AlumniSms.Views
     [DesignTimeVisible(false)]
     public partial class ContactsPage : ContentPage
     {
-        ContactsViewModel viewModel;
-
         public ContactsPage()
         {
             InitializeComponent();
-
-            BindingContext = viewModel = new ContactsViewModel();
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
+
+            var viewModel = (ContactsViewModel)BindingContext;
 
             if (viewModel.Contacts.Count == 0)
                 viewModel.LoadContactsCommand.Execute(null);

@@ -3,12 +3,15 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:vm="clr-namespace:AlumniSms.ViewModels;assembly=AlumniSms"
+            xmlns:m="clr-namespace:AlumniSms.Models;assembly=AlumniSms"
             mc:Ignorable="d"
             xmlns:views="clr-namespace:AlumniSms.Views"
-            x:Class="AlumniSms.Views.MainPage">
+            x:Class="AlumniSms.Views.MainPage"
+            x:DataType="vm:MainPageViewModel">
 
     <TabbedPage.Children>
-        <views:SendSmsPage />
-        <views:ContactsPage />
+        <views:ContactsPage BindingContext="{Binding ContactsViewModel}"/>
+        <views:SendSmsPage BindingContext="{Binding SendSmsViewModel}"/>
     </TabbedPage.Children>
 </TabbedPage>

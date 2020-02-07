@@ -14,9 +14,14 @@ namespace AlumniSms.Services
             return _tempStore.AddContactAsync(contact);
         }
 
-        public Task<IEnumerable<Contact>> GetContactsAsync()
+        public Task OverwriteContacts(IEnumerable<Contact> mergedContacts)
         {
-            return _tempStore.GetContactsAsync();
+            return _tempStore.OverwriteContacts(mergedContacts);
+        }
+
+        public Task<IEnumerable<Contact>> GetContacts()
+        {
+            return _tempStore.GetContacts();
         }
     }
 }

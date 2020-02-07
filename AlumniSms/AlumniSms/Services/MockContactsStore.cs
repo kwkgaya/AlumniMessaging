@@ -23,11 +23,19 @@ namespace AlumniSms.Services
             };
         }
 
-        public async Task<bool> AddContactAsync(Contact contact)
+        public Task<bool> AddContactAsync(Contact contact)
         {
             _contacts.Add(contact);
 
-            return await Task.FromResult(true);
+            return Task.FromResult(true);
+        }
+
+        public Task OverwriteContacts(IEnumerable<Contact> mergedContacts)
+        {
+            _contacts.Clear();
+            _contacts.AddRange(mergedContacts);
+
+            return Task.CompletedTask;
         }
 
         public async Task<bool> UpdateContactAsync(Contact contact)
@@ -52,7 +60,7 @@ namespace AlumniSms.Services
             return await Task.FromResult(_contacts.FirstOrDefault(s => s.Id == id));
         }
 
-        public async Task<IEnumerable<Contact>> GetContactsAsync()
+        public async Task<IEnumerable<Contact>> GetContacts()
         {
             return await Task.FromResult(_contacts);
         }

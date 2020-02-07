@@ -26,7 +26,7 @@ namespace AlumniSms.ViewModels
 
         private async Task SendSmsToAll()
         {
-            foreach (var contact in await ContactsStore.GetContactsAsync())
+            foreach (var contact in await ContactsStore.GetContacts())
             {
                 var text = SmsText.Replace("@Name", contact.Name);
                 var message = new SmsMessage(text, contact.Mobile);

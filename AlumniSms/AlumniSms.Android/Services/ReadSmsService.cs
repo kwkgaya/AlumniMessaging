@@ -62,13 +62,13 @@ namespace AlumniSms.Droid.Services
                 do
                 {
                     var body = cursor.GetString(3);
-                    if(!body.StartsWith(startTag, StringComparison.OrdinalIgnoreCase)) continue;
+                    if(!body.Trim().StartsWith(startTag, StringComparison.OrdinalIgnoreCase)) continue;
 
                     var sender = cursor.GetString(1);
                     var dateMillis = cursor.GetLong(2);
                     var receivedDate = new Date(dateMillis);
 
-                    smsList.Add(new ReceivedSms {Sender = sender, Text = body});
+                    smsList.Add(new ReceivedSms {Sender = sender, Text = body.Trim() });
                 } while (cursor.MoveToNext());
             }
 

@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using AlumniMessaging.Models;
+using CsvHelper;
+using Xamarin.Essentials;
 
 namespace AlumniMessaging.Services
 {
     public class ContactsDataStore : IContactsStore
     {
+        readonly string _path = Path.Combine(FileSystem.AppDataDirectory, "contacts.csv");
         readonly IContactsStore _tempStore = new MockContactsStore();
 
         public Task<bool> AddContactAsync(Contact contact)
@@ -14,14 +20,29 @@ namespace AlumniMessaging.Services
             return _tempStore.AddContactAsync(contact);
         }
 
-        public Task OverwriteContacts(IEnumerable<Contact> mergedContacts)
+        public async Task OverwriteContacts(IEnumerable<Contact> mergedContacts)
         {
-            return _tempStore.OverwriteContacts(mergedContacts);
+            try
+            {
+                using var writer = new StreamWriter(_path);
+                await using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+                await csv.WriteRecordsAsync(mergedContacts);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
-        public Task<IEnumerable<Contact>> GetContacts()
+        public async Task<List<Contact>> GetContacts()
         {
-            return _tempStore.GetContacts();
+            if(!File.Exists(_path))
+                return new List<Contact>();
+
+            using var writer = new StreamReader(_path);
+            using var csv = new CsvReader(writer, CultureInfo.InvariantCulture);
+            var result = await csv.GetRecordsAsync<Contact>().ToListAsync();
+            return result;
         }
     }
 }

@@ -41,12 +41,8 @@ namespace AlumniMessaging.ViewModels
 
             try
             {
-                Contacts.Clear();
-                var items = await ContactsStore.GetContacts();
-                foreach (var item in items)
-                {
-                    Contacts.Add(item);
-                }
+                var contacts = await ContactsStore.GetContacts();
+                ReloadContacts(contacts);
             }
             catch (Exception ex)
             {
@@ -57,6 +53,7 @@ namespace AlumniMessaging.ViewModels
                 IsBusy = false;
             }
         }
+
         async Task ExecuteReadMessagesCommand()
         {
             if (IsBusy)
@@ -69,8 +66,10 @@ namespace AlumniMessaging.ViewModels
                 var messages = await _messageReaderService.ReadMessage("AGM", new DateTime(2020, 2, 7));
                 var newContacts = ParseContactsFromMessage(messages);
                 var oldContacts = await ContactsStore.GetContacts();
-                var mergedContacts = MergeContacts(newContacts, oldContacts);
+                var mergedContacts = MergeContacts(newContacts, oldContacts).ToList();
                 await ContactsStore.OverwriteContacts(mergedContacts);
+                ReloadContacts(mergedContacts);
+
             }
             catch (Exception ex)
             {
@@ -79,6 +78,15 @@ namespace AlumniMessaging.ViewModels
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        private void ReloadContacts(IEnumerable<Contact> contacts)
+        {
+            Contacts.Clear();
+            foreach (var item in contacts)
+            {
+                Contacts.Add(item);
             }
         }
 

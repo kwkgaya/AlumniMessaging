@@ -47,14 +47,14 @@ namespace AlumniMessaging.Droid.Services
         {
             CheckAndRequestPermissions();
 
-            var messageList = new List<ReceivedTextMessage>();
+            var messageSet = new HashSet<ReceivedTextMessage>();
             var reqCols = new[] { "_id", "address", "date", "body" };
             var epochMillis = (fromDateTime.Ticks - TicksAtEpoch) / TicksPerMillisecond;
             var cursor = _context.ContentResolver.Query(
                 Uri.Parse(Inbox), 
                 reqCols, 
                 "date > ?", new []{epochMillis.ToString()},
-                null);
+                "date DESC");
             
             if (cursor.MoveToFirst())
             {
@@ -68,11 +68,11 @@ namespace AlumniMessaging.Droid.Services
                     var dateMillis = cursor.GetLong(2);
                     var receivedDate = new Date(dateMillis);
 
-                    messageList.Add(new ReceivedTextMessage {Sender = sender, Text = body.Trim() });
+                    messageSet.Add(new ReceivedTextMessage {Sender = sender, Text = body.Trim() });
                 } while (cursor.MoveToNext());
             }
 
-            return messageList;
+            return messageSet;
         }
         private bool CheckAndRequestPermissions()
         {

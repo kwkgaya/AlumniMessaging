@@ -15,7 +15,8 @@ namespace AlumniMessaging.Droid.Services
 
         public Task<bool> Send(string recipient, string text)
         {
-            _permissionRequest.CheckAndRequestPermissions(Permission.SendSms);
+            var granted = _permissionRequest.CheckAndRequestPermissions(Permission.SendSms);
+            if (!granted) return Task.FromResult(false);
 
             SmsManager.Default.SendTextMessage(recipient, null, text, null, null);
 

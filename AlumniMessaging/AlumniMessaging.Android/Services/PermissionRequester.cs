@@ -21,6 +21,7 @@ namespace AlumniMessaging.Droid.Services
                     RequestIdMultiplePermissions);
                 return false;
             }
+
             return true;
         }
     }

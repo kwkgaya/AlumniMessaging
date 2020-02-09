@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AlumniMessaging.Services;
 using Android.Content;
@@ -29,14 +30,15 @@ namespace AlumniMessaging.Droid.Services
             {
                 try
                 {
-                    _permissionRequest.CheckAndRequestPermissions(Permission.ReadSms);
+                    var granted = _permissionRequest.CheckAndRequestPermissions(Permission.ReadSms);
+                    if (!granted) return Enumerable.Empty<ReceivedTextMessage>();
 
                     return ReadMessagePrivate(startTag, fromDate);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    return new List<ReceivedTextMessage>();
+                    return Enumerable.Empty<ReceivedTextMessage>();
                 }
             });
         }

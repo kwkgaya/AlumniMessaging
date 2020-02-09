@@ -12,7 +12,7 @@
     <Grid Padding="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Button BackgroundColor="{StaticResource Accent}"
                 Text="Send to All"
@@ -23,10 +23,11 @@
                 IsEnabled="{Binding MessageText, Converter={alumniMessaging:StringToBoolConverter}}"/>
         <Frame Grid.Row="1"
                BorderColor="{x:StaticResource Key=Primary}">
-            <Entry Text="{Binding MessageText, Mode=TwoWay}"
-                   FontSize="Body"
-                   MaxLength="140"
-                   Placeholder="Message Text. Type @Name to insert contact name"/>
+            <Editor Text="{Binding MessageText, Mode=TwoWay}"
+                    FontSize="Body"
+                    MaxLength="140"
+                    MinimumHeightRequest="200"
+                    Placeholder="Message Text. Type @Name to insert contact name"/>
         </Frame>
     </Grid>
 </ContentPage>

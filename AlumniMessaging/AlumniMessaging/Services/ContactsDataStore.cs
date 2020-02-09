@@ -25,8 +25,8 @@ namespace AlumniMessaging.Services
         {
             try
             {
-                _permissionRequest.CheckAndRequestPermissions(Permission.WriteExternalStorage);
-                _permissionRequest.CheckAndRequestPermissions(Permission.ReadExternalStorage);
+                var granted = _permissionRequest.CheckAndRequestPermissions(Permission.WriteExternalStorage);
+                if(!granted) return;
 
                 using var writer = new StreamWriter(_path);
                 await using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
@@ -40,7 +40,8 @@ namespace AlumniMessaging.Services
 
         public Task<bool> Initialize()
         {
-            _permissionRequest.CheckAndRequestPermissions(Permission.ReadExternalStorage);
+            var granted = _permissionRequest.CheckAndRequestPermissions(Permission.ReadExternalStorage);
+            if (!granted) return Task.FromResult(false);
 
             if (File.Exists(_initPath)) return Task.FromResult(false);
 
@@ -50,7 +51,8 @@ namespace AlumniMessaging.Services
 
         public async Task<List<Contact>> GetContacts()
         {
-            _permissionRequest.CheckAndRequestPermissions(Permission.ReadExternalStorage);
+            var granted = _permissionRequest.CheckAndRequestPermissions(Permission.ReadExternalStorage);
+            if (!granted) return new List<Contact>();
 
             if (!File.Exists(_path))
                 return new List<Contact>();

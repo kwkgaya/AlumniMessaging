@@ -2,13 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AlumniMessaging.Services;
-using Android;
-using Android.App;
 using Android.Content;
-using Android.Support.V4.App;
-using Android.Support.V4.Content;
 using Java.Util;
-using Permission = Android.Content.PM.Permission;
 using Uri = Android.Net.Uri;
 
 namespace AlumniMessaging.Droid.Services
@@ -17,7 +12,6 @@ namespace AlumniMessaging.Droid.Services
     public class MessageReaderService : IMessageReader
     {
         private readonly Context _context;
-        private const int RequestIdMultiplePermissions = 1;
         private const string Inbox = "content://sms/inbox";
         private const long TicksAtEpoch = 621355968000000000L;
         private const long TicksPerMillisecond = 10000;
@@ -45,8 +39,6 @@ namespace AlumniMessaging.Droid.Services
         
         private IEnumerable<ReceivedTextMessage> ReadMessagePrivate(string startTag, DateTime fromDateTime)
         {
-            CheckAndRequestPermissions();
-
             var messageSet = new HashSet<ReceivedTextMessage>();
             var reqCols = new[] { "_id", "address", "date", "body" };
             var epochMillis = (fromDateTime.Ticks - TicksAtEpoch) / TicksPerMillisecond;
@@ -73,18 +65,6 @@ namespace AlumniMessaging.Droid.Services
             }
 
             return messageSet;
-        }
-        private bool CheckAndRequestPermissions()
-        {
-            var permission = ContextCompat.CheckSelfPermission(_context, Manifest.Permission.ReadSms);
-
-            if (permission != Permission.Granted)
-            {
-                ActivityCompat.RequestPermissions((Activity)_context, new String[] { Manifest.Permission.ReadSms },
-                    RequestIdMultiplePermissions);
-                return false;
-            }
-            return true;
         }
     }
 }

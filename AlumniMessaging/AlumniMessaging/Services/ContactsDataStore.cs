@@ -13,12 +13,6 @@ namespace AlumniMessaging.Services
     public class ContactsDataStore : IContactsStore
     {
         readonly string _path = Path.Combine(FileSystem.AppDataDirectory, "contacts.csv");
-        readonly IContactsStore _tempStore = new MockContactsStore();
-
-        public Task<bool> AddContactAsync(Contact contact)
-        {
-            return _tempStore.AddContactAsync(contact);
-        }
 
         public async Task OverwriteContacts(IEnumerable<Contact> mergedContacts)
         {

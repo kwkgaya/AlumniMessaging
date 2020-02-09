@@ -20,8 +20,6 @@ namespace AlumniMessaging
             RegisterDependencies();
             InitializeComponent();
 
-            DependencyService.Register<MockContactsStore>();
-
             ServiceContainer.Compile();
             var mainPageVm = ServiceContainer.GetInstance<MainPageViewModel>();
             MainPage = new MainPage {BindingContext = mainPageVm};

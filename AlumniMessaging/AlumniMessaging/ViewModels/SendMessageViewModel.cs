@@ -28,7 +28,8 @@ namespace AlumniMessaging.ViewModels
         {
             foreach (var contact in await ContactsStore.GetContacts())
             {
-                var text = MessageText.Replace("@Name", contact.Name);
+                var salutation = string.IsNullOrWhiteSpace(contact.Name) ? "Sir/Madam" : contact.Name;
+                var text = MessageText.Replace("@Name", salutation);
                 var message = new SmsMessage(text, contact.Mobile);
                 await Sms.ComposeAsync(message);
             }

@@ -12,14 +12,21 @@ namespace AlumniMessaging.Services
 {
     public class ContactsDataStore : IContactsStore
     {
+        private readonly IPermissionRequest _permissionRequest;
         readonly string _path = Path.Combine(FileSystem.AppDataDirectory, "contacts.csv");
         readonly string _initPath = Path.Combine(FileSystem.AppDataDirectory, "init.csv");
+
+        public ContactsDataStore(IPermissionRequest permissionRequest)
+        {
+            _permissionRequest = permissionRequest;
+        }
 
         public async Task OverwriteContacts(IEnumerable<Contact> mergedContacts)
         {
             try
             {
-                PermissionRequester.CheckAndRequestPermissions(Android.Manifest.Permission.WriteExternalStorage);
+                _permissionRequest.CheckAndRequestPermissions(Permission.WriteExternalStorage);
+                _permissionRequest.CheckAndRequestPermissions(Permission.ReadExternalStorage);
 
                 using var writer = new StreamWriter(_path);
                 await using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
@@ -33,6 +40,8 @@ namespace AlumniMessaging.Services
 
         public Task<bool> Initialize()
         {
+            _permissionRequest.CheckAndRequestPermissions(Permission.ReadExternalStorage);
+
             if (File.Exists(_initPath)) return Task.FromResult(false);
 
             File.Create(_initPath);
@@ -41,7 +50,9 @@ namespace AlumniMessaging.Services
 
         public async Task<List<Contact>> GetContacts()
         {
-            if(!File.Exists(_path))
+            _permissionRequest.CheckAndRequestPermissions(Permission.ReadExternalStorage);
+
+            if (!File.Exists(_path))
                 return new List<Contact>();
 
             using var writer = new StreamReader(_path);

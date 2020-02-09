@@ -41,9 +41,9 @@ namespace AlumniMessaging
         {
             ServiceContainer.Register(f => ServiceContainer, new PerContainerLifetime());
             ServiceContainer.Register<IContactsStore, ContactsDataStore>(new PerContainerLifetime());
-            ServiceContainer.Register<ContactsViewModel>();
-            ServiceContainer.Register<SendMessageViewModel>();
-            ServiceContainer.Register<MainPageViewModel>();
+            ServiceContainer.Register<ContactsViewModel>(new PerContainerLifetime());
+            ServiceContainer.Register<SendMessageViewModel>(new PerContainerLifetime());
+            ServiceContainer.Register<MainPageViewModel>(new PerContainerLifetime());
         }
     }
 }

@@ -6,6 +6,7 @@ using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
 using LightInject;
+using Permission = Android.Content.PM.Permission;
 
 namespace AlumniMessaging.Droid
 {
@@ -16,6 +17,7 @@ namespace AlumniMessaging.Droid
         {
             App.ServiceContainer.Register<IMessageReader, MessageReaderService>(new PerContainerLifetime());
             App.ServiceContainer.Register<IMessageSender, MessageSender>(new PerContainerLifetime());
+            App.ServiceContainer.Register<IPermissionRequest, PermissionRequester>(new PerContainerLifetime());
             App.ServiceContainer.Register<Context>(f => this);
             App.ServiceContainer.Register<Activity>(f => this);
 
@@ -26,12 +28,7 @@ namespace AlumniMessaging.Droid
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-
-            PermissionRequester.CheckAndRequestPermissions(Android.Manifest.Permission.WriteExternalStorage);
-            PermissionRequester.CheckAndRequestPermissions(Android.Manifest.Permission.ReadSms);
-            PermissionRequester.CheckAndRequestPermissions(Android.Manifest.Permission.ReadExternalStorage);
-            PermissionRequester.CheckAndRequestPermissions(Android.Manifest.Permission.SendSms);
-
+            
             LoadApplication(new App());
         }
 

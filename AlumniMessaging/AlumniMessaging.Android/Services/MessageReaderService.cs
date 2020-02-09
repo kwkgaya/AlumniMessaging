@@ -12,13 +12,15 @@ namespace AlumniMessaging.Droid.Services
     public class MessageReaderService : IMessageReader
     {
         private readonly Context _context;
+        private readonly IPermissionRequest _permissionRequest;
         private const string Inbox = "content://sms/inbox";
         private const long TicksAtEpoch = 621355968000000000L;
         private const long TicksPerMillisecond = 10000;
 
-        public MessageReaderService(Context context)
+        public MessageReaderService(Context context, IPermissionRequest permissionRequest)
         {
             _context = context;
+            _permissionRequest = permissionRequest;
         }
 
         public Task<IEnumerable<ReceivedTextMessage>> ReadMessage(string startTag, DateTime fromDate)
@@ -27,6 +29,8 @@ namespace AlumniMessaging.Droid.Services
             {
                 try
                 {
+                    _permissionRequest.CheckAndRequestPermissions(Permission.ReadSms);
+
                     return ReadMessagePrivate(startTag, fromDate);
                 }
                 catch (Exception e)

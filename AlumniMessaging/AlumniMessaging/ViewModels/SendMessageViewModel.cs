@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using AlumniMessaging.Services;
 using Xamarin.Essentials;
@@ -32,15 +34,25 @@ namespace AlumniMessaging.ViewModels
 
         private async Task SendMessageToAll()
         {
-            foreach (var contact in _contactsVm.Contacts)
+            try
             {
-                var salutation = string.IsNullOrWhiteSpace(contact.Name) ? "Sir/Madam" : contact.Name;
-                var text = MessageText.Replace("@Name", salutation);
-                await _sender.Send(contact.Mobile, text);
-
-                //var message = new SmsMessage(text, contact.Mobile);
-                //await Sms.ComposeAsync(message);
+                //var salutation = string.IsNullOrWhiteSpace(contact.Name) ? "Sir/Madam" : contact.Name;
+                //var text = MessageText.Replace("@Name", salutation);
+                var recipients = _contactsVm.Contacts.Select(c => c.Mobile).ToArray();
+                await _sender.Send(MessageText, recipients);
             }
+            catch (InvalidOperationException e) when(e.Message.Contains("too large"))
+            {
+                //await DisplayAlert("Message too large", e.Message, "OK");
+                Console.WriteLine(e);
+            }
+
+            //foreach (var contact in _contactsVm.Contacts)
+            //{
+            //    var salutation = string.IsNullOrWhiteSpace(contact.Name) ? "Sir/Madam" : contact.Name;
+            //    var text = MessageText.Replace("@Name", salutation);
+            //    await _sender.Send(contact.Mobile, text);
+            //}
         }
     }
 }

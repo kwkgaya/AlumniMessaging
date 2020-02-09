@@ -3,15 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AlumniMessaging.ViewModels;assembly=AlumniMessaging"
              mc:Ignorable="d"
              x:Class="AlumniMessaging.Views.SendMessagePage"
-             xmlns:vm="clr-namespace:AlumniMessaging.ViewModels"
-             xmlns:alumniMessaging="clr-namespace:AlumniMessaging;assembly=AlumniMessaging"
+             xmlns:converters="clr-namespace:AlumniMessaging.Converters;assembly=AlumniMessaging"
              Title="Send messages"
              x:DataType="vm:SendMessageViewModel">
     <Grid Padding="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Button BackgroundColor="{StaticResource Accent}"
@@ -20,14 +21,17 @@
                 HorizontalOptions="Fill"
                 Grid.Row="0"
                 Margin="0,10,0,0"
-                IsEnabled="{Binding MessageText, Converter={alumniMessaging:StringToBoolConverter}}"/>
+                IsEnabled="{Binding MessageText, Converter={converters:StringToBoolConverter}}"/>
         <Frame Grid.Row="1"
                BorderColor="{x:StaticResource Key=Primary}">
             <Editor Text="{Binding MessageText, Mode=TwoWay}"
                     FontSize="Body"
-                    MaxLength="140"
+                    MaxLength="{x:StaticResource Key=MaxMessageLength}"
                     MinimumHeightRequest="200"
-                    Placeholder="Message Text. Type @Name to insert contact name"/>
+                    AutoSize="TextChanges"/>
         </Frame>
+        <Label Grid.Row="2"
+               Text="{Binding MessageText, Converter={converters:RemainingCharactersConverter}}"
+               IsVisible="{Binding Source={RelativeSource Self}, Path=Text, Converter={converters:StringToBoolConverter}}"/>
     </Grid>
 </ContentPage>

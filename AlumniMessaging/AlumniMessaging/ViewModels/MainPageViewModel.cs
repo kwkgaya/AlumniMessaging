@@ -10,9 +10,8 @@ namespace AlumniMessaging.ViewModels
         public SendMessageViewModel SendMessageViewModel { get; }
 
         public MainPageViewModel(
-            IContactsStore contactsStore,
             SendMessageViewModel sendMessageViewModel,
-            ContactsViewModel contactsViewModel) : base(contactsStore)
+            ContactsViewModel contactsViewModel)
         {
             SendMessageViewModel = sendMessageViewModel;
             ContactsViewModel = contactsViewModel;

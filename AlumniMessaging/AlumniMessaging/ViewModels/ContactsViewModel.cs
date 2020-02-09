@@ -16,13 +16,17 @@ namespace AlumniMessaging.ViewModels
     {
         private readonly char[] _digits = new[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
         private readonly IMessageReader _messageReaderService;
+        private readonly IContactsStore _contactsStore;
+
         public ObservableCollection<Contact> Contacts { get; set; }
         public Command LoadContactsCommand { get; }
         public Command ReadMessagesCommand { get; }
-        
-        public ContactsViewModel(IContactsStore contactsStore, IMessageReader messageReaderService) : base(contactsStore)
+
+        public ContactsViewModel(IContactsStore contactsStore, IMessageReader messageReaderService)
         {
+            _contactsStore = contactsStore;
             _messageReaderService = messageReaderService;
+
             Title = "Contacts";
             Contacts = new ObservableCollection<Contact>();
 
@@ -32,7 +36,8 @@ namespace AlumniMessaging.ViewModels
 
         async Task ExecuteLoadContactsCommand()
         {
-            ReadMessagesCommand.Execute(null);
+            if(await _contactsStore.Initialize())
+                ReadMessagesCommand.Execute(null);
 
             if (IsBusy)
                 return;
@@ -41,7 +46,7 @@ namespace AlumniMessaging.ViewModels
 
             try
             {
-                var contacts = await ContactsStore.GetContacts();
+                var contacts = await _contactsStore.GetContacts();
                 ReloadContacts(contacts);
             }
             catch (Exception ex)
@@ -65,9 +70,9 @@ namespace AlumniMessaging.ViewModels
             {
                 var messages = await _messageReaderService.ReadMessage("AGM", new DateTime(2020, 2, 7));
                 var newContacts = ParseContactsFromMessage(messages);
-                var oldContacts = await ContactsStore.GetContacts();
+                var oldContacts = await _contactsStore.GetContacts();
                 var mergedContacts = MergeContacts(newContacts, oldContacts).ToList();
-                await ContactsStore.OverwriteContacts(mergedContacts);
+                await _contactsStore.OverwriteContacts(mergedContacts);
                 ReloadContacts(mergedContacts);
 
             }

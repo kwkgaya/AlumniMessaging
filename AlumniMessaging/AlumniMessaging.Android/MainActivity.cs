@@ -15,6 +15,7 @@ namespace AlumniMessaging.Droid
         protected override void OnCreate(Bundle savedInstanceState)
         {
             App.ServiceContainer.Register<IMessageReader, MessageReaderService>(new PerContainerLifetime());
+            App.ServiceContainer.Register<IMessageSender, MessageSender>(new PerContainerLifetime());
             App.ServiceContainer.Register<Context>(f => this);
             App.ServiceContainer.Register<Activity>(f => this);
 

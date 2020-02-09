@@ -8,13 +8,6 @@ namespace AlumniMessaging.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IContactsStore ContactsStore { get; }
-
-        public BaseViewModel(IContactsStore contactsStore)
-        {
-            ContactsStore = contactsStore;
-        }
-
         bool _isBusy = false;
         public bool IsBusy
         {

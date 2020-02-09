@@ -13,11 +13,14 @@ namespace AlumniMessaging.Services
     public class ContactsDataStore : IContactsStore
     {
         readonly string _path = Path.Combine(FileSystem.AppDataDirectory, "contacts.csv");
+        readonly string _initPath = Path.Combine(FileSystem.AppDataDirectory, "init.csv");
 
         public async Task OverwriteContacts(IEnumerable<Contact> mergedContacts)
         {
             try
             {
+                PermissionRequester.CheckAndRequestPermissions(Android.Manifest.Permission.WriteExternalStorage);
+
                 using var writer = new StreamWriter(_path);
                 await using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
                 await csv.WriteRecordsAsync(mergedContacts);
@@ -26,6 +29,14 @@ namespace AlumniMessaging.Services
             {
                 Console.WriteLine(e);
             }
+        }
+
+        public Task<bool> Initialize()
+        {
+            if (File.Exists(_initPath)) return Task.FromResult(false);
+
+            File.Create(_initPath);
+            return Task.FromResult(true);
         }
 
         public async Task<List<Contact>> GetContacts()

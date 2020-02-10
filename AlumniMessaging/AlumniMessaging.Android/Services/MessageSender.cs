@@ -15,9 +15,10 @@ namespace AlumniMessaging.Droid.Services
         private readonly IPermissionRequest _permissionRequest;
         private readonly Context _context;
 
-        public const string INTENT_MESSAGE_SENT = "message.sent";
-        public const string INTENT_MESSAGE_DELIVERED = "message.delivered";
-        private const string TAG = "SendSMS";
+        public const string IntentMessageSent = "lk.alumni.messaging.message.sent";
+        public const string IntentMessageDelivered = "lk.alumni.messaging.message.delivered";
+        private const string ExtraMessageId = "ExtraMessageId";
+        private const string Tag = "SendSMS";
 
         public MessageSender(IPermissionRequest permissionRequest, Context context)
         {
@@ -43,16 +44,16 @@ namespace AlumniMessaging.Droid.Services
             var sm = SmsManager.Default;
 
             var parts = sm.DivideMessage(message);
-            var sentIntent = new Intent(INTENT_MESSAGE_SENT);
 
+            using var sentIntent = new Intent(IntentMessageSent);
             int sentId = IdGenerator.Next();
-            var sentPi = PendingIntent.GetBroadcast(_context, sentId, sentIntent, PendingIntentFlags.CancelCurrent);
+            using var sentPi = PendingIntent.GetBroadcast(_context, sentId, sentIntent, PendingIntentFlags.CancelCurrent);
 
-            var deliveryIntent = new Intent(INTENT_MESSAGE_DELIVERED);
+            using var deliveryIntent = new Intent(IntentMessageDelivered);
             int deliveredId = IdGenerator.Next();
-            var deliveredPi = PendingIntent.GetBroadcast(_context, deliveredId, deliveryIntent, PendingIntentFlags.CancelCurrent);
+            using var deliveredPi = PendingIntent.GetBroadcast(_context, deliveredId, deliveryIntent, PendingIntentFlags.CancelCurrent);
 
-            Log.Info(TAG, "sending SMS: parts: " + parts.Count + " message: "+ message);
+            Log.Info(Tag, "sending SMS: parts: " + parts.Count + " message: "+ message);
             if (parts.Count > 1)
             {
                 throw new InvalidOperationException("Message is too large for one sms");
@@ -86,11 +87,12 @@ namespace AlumniMessaging.Droid.Services
                 {
                     try
                     {
+                        sentPi.s
                         sm.SendTextMessage(receiver, null, parts[0], sentPi,deliveredPi);
                     }
                     catch (Exception e)
                     {
-                        Log.Error(TAG, e, "Failed to send to receiver: " + receiver);
+                        Log.Error(Tag, e, "Failed to send to receiver: " + receiver);
                     }
                 }
             }
@@ -103,6 +105,23 @@ namespace AlumniMessaging.Droid.Services
             private static readonly AtomicInteger Counter = new AtomicInteger();
 
             public static int Next() => Counter.GetAndIncrement();
+        }
+
+        private class SentMessage : BroadcastReceiver
+        {
+            public override void OnReceive(Context context, Intent intent)
+            {
+                int recipientId = intent.GetIntExtra(ExtraMessageId, -1);
+                Log.Debug(Tag, "SentMessage");
+                switch (ResultCode)
+                {
+                    case Result.Ok:
+                        break;
+                    default:
+                        break;
+                }
+
+            }
         }
     }
 }
